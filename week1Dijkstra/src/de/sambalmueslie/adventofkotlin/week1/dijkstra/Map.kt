@@ -13,7 +13,11 @@ class Map(val width: Int, val height: Int) {
 
     fun setRow(row: Int, values: CharArray) {
         val start = getIndex(0, row)
-        values.forEachIndexed { index, c -> data[start + index] = c }
+        values.forEachIndexed { i, c ->
+            run {
+                data[start + i] = c
+            }
+        }
     }
 
     fun findFirst(value: Char) = getPos(data.indexOfFirst { it == value })
@@ -24,7 +28,7 @@ class Map(val width: Int, val height: Int) {
         val buf = StringBuffer()
         for (r in 0 until height) {
             for (c in 0 until width) {
-                val index = r * (width - 1) + c
+                val index = r * width + c
                 buf.append(data[index])
             }
             if (r < (height - 1)) {
@@ -37,8 +41,8 @@ class Map(val width: Int, val height: Int) {
     private fun getPos(index: Int): Position? {
         if (index < 0) return null
 
-        val col = index % (width - 1)
-        val row = (index - col) / (width - 1)
+        val col = index % width
+        val row = (index - col) / width
         return Position(row, col)
     }
 
@@ -46,7 +50,7 @@ class Map(val width: Int, val height: Int) {
         if (col < 0 || col >= width) throw IllegalArgumentException("Invalid column specified $col")
         if (row < 0 || row >= height) throw IllegalArgumentException("Invalid row specified $row")
 
-        return row * (width - 1) + col
+        return row * width + col
     }
 
 

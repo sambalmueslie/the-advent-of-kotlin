@@ -114,4 +114,28 @@ internal class DijkstraAlgorithmTest {
         val result = DijkstraAlgorithm().addPath(mapString)
         assertEquals(marked, result)
     }
+
+    @Test
+    fun `Mark way on labirynth`() {
+        val mapString = """
+        BB..B...B...BBBBB...
+        ....B.X.BBB.B...B.B.
+        ..BBB.B.B.B.B.B.B.B.
+        ....B.BBB.B.B.BS..B.
+        BBB.B...B.B.BBBBBBB.
+        ..B...B.............
+        """.trimIndent()
+
+        val marked = """
+        BB..B...B...BBBBB.*.
+        ....B.*.BBB.B...B*B*
+        ..BBB*B.B.B.B.B.B*B*
+        ....B*BBB.B.B.B**.B*
+        BBB.B.*.B.B.BBBBBBB*
+        ..B...B************.
+        """.trimIndent()
+
+        val result = DijkstraAlgorithm().addPath(mapString)
+        assertEquals(marked, result)
+    }
 }

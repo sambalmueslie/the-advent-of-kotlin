@@ -41,6 +41,7 @@ class DijkstraAlgorithm : BaseShortestPathAlgorithm() {
     ) {
         while (q.isNotEmpty()) {
             val u = q.findMinDistance()
+            System.out.println("Start searching for ${u.pos} = '${map[u.pos.column, u.pos.row]}'")
 
             q -= u
 
@@ -49,6 +50,7 @@ class DijkstraAlgorithm : BaseShortestPathAlgorithm() {
 
             val neighbors = q.getNeighbours(map, u)
             for (neighbor in neighbors) {
+                System.out.println(" - process neighbour ${neighbor.pos} = '${map[neighbor.pos.column, neighbor.pos.row]}'")
                 val alt = u.distanceToSource + distance(u, neighbor)
                 if (alt < neighbor.distanceToSource) {
                     neighbor.distanceToSource = alt
