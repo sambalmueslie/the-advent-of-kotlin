@@ -11,8 +11,34 @@ class DijkstraAlgorithm : BaseShortestPathAlgorithm() {
             ?: throw IllegalArgumentException("Map without source cannot processed")
         val target = findEnd(map)?.toVertex()
             ?: throw IllegalArgumentException("Map without end cannot processed")
-        val q = initVertexSet(map, source, target)
 
+        val q = initVertexSet(map, source, target)
+        search(q, target, map)
+        markPath(target, map)
+        return map
+    }
+
+    private fun markPath(
+        target: Vertex,
+        map: Map
+    ) {
+        val path = mutableListOf<Vertex>(target)
+        var u: Vertex? = target
+        while (u?.previous != null) {
+            u = u.previous
+            if (u != null) {
+                path.add(0, u)
+            }
+        }
+
+        path.map { it.pos }.forEach { map[it.column, it.row] = WAY_MARKER }
+    }
+
+    private fun search(
+        q: MutableList<Vertex>,
+        target: Vertex,
+        map: Map
+    ) {
         while (q.isNotEmpty()) {
             val u = q.findMinDistance()
 
@@ -30,21 +56,6 @@ class DijkstraAlgorithm : BaseShortestPathAlgorithm() {
                 }
             }
         }
-
-        val path = mutableListOf<Vertex>(target)
-        var u: Vertex? = target
-        while (u?.previous != null) {
-            u = u.previous
-            if (u != null) {
-                path.add(0, u)
-            }
-        }
-
-        for (p in path) {
-            map[p.pos.column, p.pos.row] = WAY_MARKER
-        }
-
-        return map
     }
 
     private fun distance(u: Vertex, neighbor: Vertex): Double {
